@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<!-- Created-By:Pradip | Created-Date:5-2-19 |Info. Only Search By Name Not Created,Edited,Not Open-->
+	<record id="purchase_order_form_view" model="ir.ui.view">
+	    <field name="name">purchase.order</field>
+	    <field name="model">purchase.order</field>
+	    <field name="inherit_id" ref="purchase.purchase_order_form"/>
+	    <field name="arch" type="xml">
+	        <xpath expr="//form//sheet//notebook//page//field[@name='payment_term_id']" position="after">
+	            <field name="deliver_term_id" options="{'no_create': True,'no_edit': True,'no_open':True}"/>
+				<field name="transport_mode_id" options="{'no_create': True,'no_edit': True,'no_open':True}"/>                    
+	        </xpath>
+	    </field>
+	</record>
+</odoo>
