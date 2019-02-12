@@ -1,0 +1,109 @@
+# # #     @api.model
+# # #     def name_search(self, name='', args=None, operator='ilike', limit=100):
+# # #         #no need of res
+# # #         res = super(ProductProduct, self).name_search(name='', args=None, operator='ilike', limit=100)
+# # #            
+# # #         ids = self.search(args + [('mf_part_no', '=', name)], limit=limit)
+# # #         if ids:
+# # #    
+# # #           return ids.name_get()
+# # #         ids_101 = self.search(args + [('manufacturer','=',name)], limit=limit)
+# # #         if ids_101:
+# # #             return ids_101.name_get()
+# # #         return res
+# # #  
+
+
+
+
+
+<tree default_order="create_date desc" decoration-danger="assigned_user_id==False" decoration-muted="assigned_user_id!=uid and create_uid!=uid">
+
+<tree default_order="create_date desc" decoration-danger="assigned_user_id==False" decoration-muted="assigned_user_id!=uid and create_uid!=uid">
+
+
+
+
+
+jeevan
+@api.model
+    def name_search(self, name='', args=None, operator='ilike', limit=100):
+        res = super(ProductProduct, self).name_search(name=name, args=args, operator='ilike', limit=100)
+        ids = self.search([('mf_part_no', '=', name)])
+        make_desc_ids=self.env['make_master.info'].search([('make_description','=',name)])
+        print("make_desc_ids===========",make_desc_ids.make_description)
+        manufacturer_ids=self.search([('manufacturer','=',make_desc_ids.id)])
+        
+        if ids:
+            return ids.name_get()
+        else:
+            return res
+#         if manufacturer_ids:
+#             return manufacturer_ids.name_get()
+#         else:
+#             return res
+# # #       
+
+
+
+final
+
+ @api.model
+    def name_search(self, name='', args=None, operator='ilike', limit=100):
+        res = super(ProductProduct, self).name_search(name=name, args=args, operator='ilike', limit=100)
+        ids = self.search([('mf_part_no', '=', name)])
+#         make_desc_ids=self.env['make_master.info'].search([('make_description','=',name)])
+        make_desc_ids=self.search([('manufacturer.make_description',operator,name)])
+        print("make_desc_ids===========",make_desc_ids,make_desc_ids.name_get(),len(make_desc_ids.name_get()))
+#         manufacturer_ids=self.search([('manufacturer','=',make_desc_ids.id)])
+        
+        if ids:
+            return ids.name_get()
+        elif make_desc_ids:
+            return make_desc_ids.name_get()
+        else:
+            return res   
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            unique:
+            
+            
+            
+              @api.model
+    def create(self,val):
+#         if val:
+#             val['transport_cost_code'] = self.env['ir.sequence'].next_by_code('transport_cost.master')
+#         if 'unique_transport_cost_desc' in val:
+#             value=val['unique_transport_cost_desc'] 
+#             search_records=self.search([('unique_transport_cost_desc','=',value)])
+#             if search_records:
+#                 print("@@@@@0000")
+#                 raise UserError('Please Enter Transport Cost @@@@@@.')
+#         if 'transport_cost_desc' in val:
+#                 if val['transport_cost_desc'].replace(' ','')=='':
+#                     print("@@@@1111")
+#                     raise UserError('Please Enter Transport Cost.')
+# #                 else:
+# #                     if val:
+#         print("@@@@2222")
+        val['transport_cost_code'] = self.env['ir.sequence'].next_by_code('transport_cost.master')
+        print("@@@@3333")
+       # if val.get('transport_cost_code', _('New')) == _('New'):
+    #    if 'transport_cost_code' in val:
+#                 if val['transport_cost_code']:
+#                     val['transport_cost_code'] = self.env['ir.sequence'].next_by_code('transport_cost.master')
+        return super(transport_cost_master,self).create(val)
+            
+             
